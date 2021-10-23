@@ -1,0 +1,211 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <!-- Required meta tags -->
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+
+    <!-- Bootstrap CSS -->
+    <link
+      rel="stylesheet"
+      href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css"
+      integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T"
+      crossorigin="anonymous"
+    />
+
+    <title>Time Table</title>
+  </head>
+  <body>
+    <nav class="navbar navbar-dark bg-dark">
+      <div class="container-fluid">
+        <a class="navbar-brand" href="/">TimeTable</a>
+        <!--  -->
+          <form class="d-flex">
+            <input
+              class="form-control me-2"
+              type="search"
+              placeholder="Search By Subject"
+              aria-label="Search"
+              id=search
+            
+            />
+            <!-- <button class="btn btn-outline-success" type="submit">
+              Search
+            </button> -->
+          </form>
+        </div>
+      </div>
+    </nav>
+
+    <form action="/" method="post" >
+    <div class="container my-3">
+      <div class="form-floating mb-3">
+        <input
+          type="date"
+          name="date"
+          class="form-control"
+          id="floatingInput"
+          placeholder="Date"
+        />
+        <label for="floatingInput">Date</label>
+      </div>
+
+      <div class="form-floating mb-3">
+        <!-- <input
+          type="day"
+          name="day"
+          class="form-control"
+          id="floatingInput"
+          placeholder="Date"
+        /> -->
+        <span>
+          <select
+            name="day"
+            type="select"
+            class="form-control"
+            ,id="floatingInput"
+            ,placeholder="Day"
+          >
+            <option value="Monday">Monday</option>
+            <option value="Tuesday">Tuesday</option>
+            <option value="Wednesday">Wednesday</option>
+            <option value="Thursday">Thursday</option>
+            <option value="Friday">Friday</option>
+            <option value="Saturday">Saturday</option>
+            <option value="Sunday">Sunday</option>
+          </select>
+        </span>
+        <label for="floatingInput"></label>
+      </div>
+
+      <div class="form-floating mb-3">
+        <input
+          type="time"
+          name="time"
+          class="form-control"
+          id="time"
+          placeholder="Time"
+        />
+        <label for="floatingPassword">From:Time</label>
+      </div>
+      <div class="form-floating mb-3">
+        <input
+          type="time"
+          name="times"
+          class="form-control"
+          id="times"
+          placeholder="Time"
+        />
+        <label for="floatingPassword">To:Time</label>
+      </div>
+      <div class="form-floating mb-3">
+        <input
+          type=""
+          name="duration"
+          class="form-control"
+          id="duration"
+          placeholder="Click here"
+        />
+        <label for="floatingPassword">Duration</label>
+      </div>
+
+      <div class="form-floating mb-3">
+        <input
+          type="text"
+          name="subject"
+          class="form-control"
+          id="floatingPassword"
+          placeholder="Subject"
+        />
+        <label for="floatingPassword">Subject</label>
+      </div>
+      <button type="submit" class="btn btn-dark">Submit</button>
+
+      <!-- <label for="week">Select a week:</label>
+      <input type="week" id="week" name="week" />
+      <input type="submit" /> -->
+    </div>
+    </form>
+
+    <div class="container">
+      <table class="table">
+        <thead>
+          <tr>
+            <th scope="col">SNo</th>
+            <th scope="col">Date</th>
+            <th scope="col">Day</th>
+            <th scope="col">From:Time</th>
+            <th scope="col">To:Time</th>
+            <th scope="col">Duration</th>
+            <th scope="col">Subject</th>
+          </tr>
+        </thead>
+        <tbody>
+
+          {% for todo in alltodo %}
+          <tr class='tr'>
+            <th scope="row"> {{loop.index}}</th>
+            <td>{{todo.date}} </td>
+            <td>{{todo.day}} </td>
+            <td>{{todo.time}} </td>
+            <td>{{todo.times}} </td>
+            <td>{{todo.duration}} </td>
+            <td>{{todo.subject}} </td>
+            <td>
+              <a href="/delete/{{todo.sno}}" class="btn btn-danger">Delete</a>
+              <!-- <a href="/update/{{todo.sno}}" class="btn btn-primary">Update</a> -->
+            </td>
+          </tr>
+          {% endfor %}
+
+         
+        
+        </tbody>
+      </table>
+    </div>
+
+    <script
+      src="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/js/bootstrap.bundle.min.js"
+      integrity="sha384-ka7Sk0Gln4gmtz2MlQnikT1wXgYsOg+OMhuP+IlRH9sENBO0LRn5q+8nbTov4+1p"
+      crossorigin="anonymous"
+    ></script>
+    <script>
+      document.getElementById("duration").addEventListener("click", duration);
+
+      function duration() {
+        var time1 = document.getElementById("time").value;
+        var time2 = document.getElementById("times").value;
+        var time1_hour = parseInt(time1.split(":")[0]);
+        var time1_min = parseInt(time1.split(":")[1]);
+        var time2_hour = parseInt(time2.split(":")[0]);
+        var time2_min = parseInt(time2.split(":")[1]);
+        var duration = (time2_hour - time1_hour) * 60 + (time2_min - time1_min);
+        document.getElementById("duration").value = duration;
+      }
+document.getElementById("search").addEventListener("keyup", search);
+
+      function search() {
+       let filter = document.getElementById("search").value.toUpperCase();
+       let table = document.getElementById("table");
+      let tr = document.getElementsByTagName("tr");
+if (filter.length > 0) {
+  for (i = 0; i < tr.length; i++) {
+    td = tr[i].getElementsByTagName("td")[5];
+    if (td) {
+      if (td.innerHTML.toUpperCase().indexOf(filter) > -1) {
+        tr[i].style.display = "";
+      } else {
+        tr[i].style.display = "none";
+      }
+    
+      }
+    }
+  } else {  
+    for (i = 0; i < tr.length; i++) {
+      tr[i].style.display = "";
+    }
+  }
+}
+    </script>
+  </body>
+</html>
